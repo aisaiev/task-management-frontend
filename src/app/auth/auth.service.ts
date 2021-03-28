@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { ACCESS_TOKEN } from '../app.constants';
 import { AuthCredentialsDto } from './models/dto/auth-credentials.dto';
+import { UserDto } from './models/dto/user.dto';
 import { JwtToken } from './models/jwt-token.model';
 
 @Injectable({
@@ -33,6 +34,10 @@ export class AuthService {
   logout(): void {
     this.localStorageService.clear(ACCESS_TOKEN);
     this.router.navigate(['signin']);
+  }
+
+  getUser(): Observable<UserDto> {
+    return  this.httpClient.get<UserDto>(`${this.url}/user`);
   }
 
   private authenticateSuccess(response: JwtToken): void {
