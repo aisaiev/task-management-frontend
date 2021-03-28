@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -16,6 +17,7 @@ export class AuthService {
 
   constructor(
     private httpClient: HttpClient,
+    private router: Router,
     private localStorageService: LocalStorageService
   ) { }
 
@@ -26,6 +28,11 @@ export class AuthService {
 
   signUp(authCredentialsDto: AuthCredentialsDto): Observable<void> {
     return this.httpClient.post<void>(`${this.url}/signup`, authCredentialsDto);
+  }
+
+  logout(): void {
+    this.localStorageService.clear(ACCESS_TOKEN);
+    this.router.navigate(['signin']);
   }
 
   private authenticateSuccess(response: JwtToken): void {
