@@ -1,1 +1,52 @@
-<p>task works!</p>
+<div class="task-component">
+  <nav class="navbar navbar-expand-sm navbar-light bg-light fixed-top">
+    <span class="navbar-brand">Task Management</span>
+    <div class="d-flex flex-grow-1">
+      <a routerLink="create" class="btn btn-outline-primary ml-auto mr-2">
+        <i-bs name="plus" width="1.5rem" height="1.5rem">
+        </i-bs>
+        Create Task
+      </a>
+      <a class="btn btn-outline-primary" (click)="logout()">
+        <i-bs name="box-arrow-in-right" width="1.5rem" height="1.5rem">
+        </i-bs>
+      </a>
+    </div>
+  </nav>
+  <main class="container">
+    <div class="row">
+      <div class="col">
+        <input type="search" class="form-control w-auto" placeholder="Search..." [formControl]="search">
+      </div>
+      <div class="col text-right">
+        <select class="form-control d-inline-block w-auto" [formControl]="statusFilter">
+          <option value="">No Status Filter</option>
+          <option value="{{taskStatusEnum.OPEN}}">Open</option>
+          <option value="{{taskStatusEnum.IN_PROGRESS}}">In Progress</option>
+          <option value="{{taskStatusEnum.DONE}}">Done</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="card my-3" *ngFor="let task of tasks">
+          <div class="card-body">
+            <h5 class="card-title">{{task.title}}</h5>
+            <p class="card-text">{{task.description}}</p>
+            <div class="d-flex justify-content-between">
+              <select class="form-control w-auto" [(ngModel)]="task.status" (ngModelChange)="taskStatusChange(task)">
+                <option value="{{taskStatusEnum.OPEN}}" [selected]="task.status === taskStatusEnum.OPEN">Open</option>
+                <option value="{{taskStatusEnum.IN_PROGRESS}}" [selected]="task.status === taskStatusEnum.IN_PROGRESS">In Progress</option>
+                <option value="{{taskStatusEnum.DONE}}" [selected]="task.status === taskStatusEnum.DONE">Done</option>
+              </select>
+              <button type="button" class="btn btn-outline-danger" (click)="deleteTask(task.id)">
+                <i-bs name="trash" width="1.5rem" height="1.5rem">
+                </i-bs>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
