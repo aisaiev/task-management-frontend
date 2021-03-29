@@ -7,14 +7,18 @@ import { AuthModule } from './auth/auth.module';
 import { CoreModule } from './core/core.module';
 import { TaskModule } from './task/task.module';
 import { NotFoundComponent } from './layouts/not-found/not-found.component';
+import { NotificationComponent } from './shared/notification/notification.component';
+import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    NotificationComponent
   ],
   imports: [
     BrowserModule,
+    NgbToastModule,
     CoreModule,
     AuthModule,
     TaskModule,
