@@ -37,7 +37,7 @@ export class AuthService {
   }
 
   getUser(): Observable<UserDto> {
-    return  this.httpClient.get<UserDto>(`${this.url}/user`);
+    return this.httpClient.get<UserDto>(`${this.url}/user`);
   }
 
   private authenticateSuccess(response: JwtToken): void {

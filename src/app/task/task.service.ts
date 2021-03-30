@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EMPTY, Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -9,6 +9,7 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
 import { TaskStatus } from './enum/task-status.enum';
 import { Task } from './models/task.model';
+import { StatusCodes } from 'http-status-codes';
 
 @Injectable({
   providedIn: 'root'
@@ -29,13 +30,15 @@ export class TaskService {
     const url = query ? `${this.url}?${query}` : this.url;
     return this.httpClient.get<Task[]>(url)
       .pipe(
-        catchError(() => {
-          this.notificationService.show({
-            header: 'Tasks Notification',
-            body: 'Unable to retrieve tasks',
-            severity: NotificationSeverity.DANGER,
-            delay: 10000
-          })
+        catchError((error: HttpErrorResponse) => {
+          if (error.status !== StatusCodes.UNAUTHORIZED) {
+            this.notificationService.show({
+              header: 'Tasks Notification',
+              body: 'Unable to retrieve tasks',
+              severity: NotificationSeverity.DANGER,
+              delay: 10000
+            })
+          }
           return EMPTY;
         })
       );
@@ -44,13 +47,15 @@ export class TaskService {
   createTask(createTaskDto: CreateTaskDto): Observable<Task> {
     return this.httpClient.post<Task>(this.url, createTaskDto)
       .pipe(
-        catchError(() => {
-          this.notificationService.show({
-            header: 'Tasks Notification',
-            body: 'Unable to create task',
-            severity: NotificationSeverity.DANGER,
-            delay: 10000
-          })
+        catchError((error: HttpErrorResponse) => {
+          if (error.status !== StatusCodes.UNAUTHORIZED) {
+            this.notificationService.show({
+              header: 'Tasks Notification',
+              body: 'Unable to create task',
+              severity: NotificationSeverity.DANGER,
+              delay: 10000
+            })
+          }
           return EMPTY;
         })
       );
@@ -60,13 +65,15 @@ export class TaskService {
     const body = { status };
     return this.httpClient.patch<Task>(`${this.url}/${id}/status`, body)
       .pipe(
-        catchError(() => {
-          this.notificationService.show({
-            header: 'Tasks Notification',
-            body: 'Unable to update task status',
-            severity: NotificationSeverity.DANGER,
-            delay: 10000
-          })
+        catchError((error: HttpErrorResponse) => {
+          if (error.status !== StatusCodes.UNAUTHORIZED) {
+            this.notificationService.show({
+              header: 'Tasks Notification',
+              body: 'Unable to update task status',
+              severity: NotificationSeverity.DANGER,
+              delay: 10000
+            })
+          }
           return EMPTY;
         })
       );
@@ -75,13 +82,15 @@ export class TaskService {
   deleteTask(id: number): Observable<object> {
     return this.httpClient.delete(`${this.url}/${id}`)
       .pipe(
-        catchError(() => {
-          this.notificationService.show({
-            header: 'Tasks Notification',
-            body: `Unable to delete task ID ${id}`,
-            severity: NotificationSeverity.DANGER,
-            delay: 10000
-          })
+        catchError((error: HttpErrorResponse) => {
+          if (error.status !== StatusCodes.UNAUTHORIZED) {
+            this.notificationService.show({
+              header: 'Tasks Notification',
+              body: `Unable to delete task ID ${id}`,
+              severity: NotificationSeverity.DANGER,
+              delay: 10000
+            })
+          }
           return EMPTY;
         })
       );
